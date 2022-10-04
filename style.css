@@ -1,0 +1,137 @@
+:root {
+    --color-todo: #2584ff;
+    --color-done: #4db051;
+    --color-doing: #ff9902;
+    --color-low: #9f9f9f;
+    --color-medium: #ffeb3c;
+    --color-high: #f44437;
+    --color-border: #ccc;
+    --border-radius: 30px;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+img {
+    width: 100%;
+}
+
+body {
+    font-size: 2rem;
+    line-height: 1.5;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Badges */
+.badge {
+    border-radius: 20px;
+    font-size: 1.5rem;
+    font-weight: 400;
+    padding: 0.5rem 2rem;
+    white-space: nowrap;
+}
+
+.badge--todo {
+    background: var(--color-todo);
+    color: #fff;
+}
+
+.badge--done {
+    background: var(--color-done);
+    color: #fff;
+}
+
+.badge--doing {
+    background: var(--color-doing);
+    color: #fff;
+}
+
+.badge--low {
+    background: var(--color-low);
+    color: #fff;
+}
+
+.badge--medium {
+    background: var(--color-medium);
+    color: #fff;
+}
+
+.badge--high {
+    background: var(--color-high);
+    color: #fff;
+}
+
+
+.badge--small {
+    font-size: 1.6rem;
+    padding: 0.5rem 1.5rem;
+}
+
+.badge--overdue {
+    color: var(--color-high);
+    border: 1px solid var(--color-high);
+}
+
+.badge--today {
+    color: var(--color-todo);
+    border: 1px solid var(--color-todo);
+}
+
+.badge--future {
+    color: var(--color-done);
+    border: 1px solid var(--color-done);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    background-color: #6200ea;
+    padding: 1rem .5rem;
+}
+
+.logo {
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bi-list-task {
+    margin-right: 1rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.search {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: .5rem 1rem;
+    margin-right: 1rem;
+}
+
+#search {
+    outline: none;
+    border: none;
+    background: 0;
+    color: whitesmoke;
+}
+
+#search::placeholder {
+    color: #9f9f9f;
+}
+
+.bi-funnel {
+    margin-right: 1rem;
+    font-size: 2.5rem;
+}
+
+.bi-plus-circle {
+    font-size: 2.5rem;
+}
