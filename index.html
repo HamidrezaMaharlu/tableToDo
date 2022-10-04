@@ -28,7 +28,26 @@
     </div>
 </nav>
 <main>
-
+    <table>
+        <tr>
+            <td>Task</td>
+            <td>priority</td>
+            <td>Status</td>
+            <td>Deadline</td>
+            <td>Actions</td>
+        </tr>
+        <tr class="todo">
+            <td class="task"></td>
+            <td class="priority"><span class="badge"></span></td>
+            <td class="status"><span class="badge"></span></td>
+            <td class="deadline"><span class="badge"></span></td>
+            <td>
+                <i class="bi bi-eye-fill" onclick="preview(event)"></i>
+                <i class="bi bi-trash-fill"></i>
+                <i class="bi bi-pencil-fill"></i>
+            </td>
+        </tr>
+    </table>
 </main>
 <script src="main.js"></script>
 </body>
