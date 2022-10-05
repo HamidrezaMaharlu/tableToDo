@@ -43,12 +43,75 @@
             <td class="deadline"><span class="badge"></span></td>
             <td>
                 <i class="bi bi-eye-fill" onclick="preview(event)"></i>
-                <i class="bi bi-trash-fill"></i>
-                <i class="bi bi-pencil-fill"></i>
+                <i class="bi bi-trash-fill" onclick="del(event)"></i>
+                <i class="bi bi-pencil-fill" onclick="edit(event)"></i>
             </td>
         </tr>
     </table>
 </main>
+<div class="modalPreview">
+    <div class="modal-content">
+        <fieldset>
+            <legend>Task Name</legend>
+            <input id="taskNamePreview" type="text">
+        </fieldset>
+        <fieldset>
+            <legend>Priority</legend>
+            <select id="priorityPreview" name="priority">
+                <option value=""></option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Status</legend>
+            <select id="statusPreview" name="priority">
+                <option value=""></option>
+                <option value="todo">To Do</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Deadline</legend>
+            <input id="deadLinePreview" type="date">
+        </fieldset>
+        <button id="close">CLose</button>
+    </div>
+</div>
+<div class="modalEdit">
+    <div class="modal-content">
+        <fieldset>
+            <legend>Task Name</legend>
+            <input id="taskNameEdit" type="text" placeholder="Task Name" maxlength="20">
+        </fieldset>
+        <fieldset>
+            <legend>Priority</legend>
+            <select id="priorityEdit" name="priority">
+                <option value=""></option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Status</legend>
+            <select id="statusEdit" name="priority">
+                <option value=""></option>
+                <option value="todo">To Do</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Deadline</legend>
+            <input id="deadLineEdit" type="date">
+        </fieldset>
+        <button id="save">save</button>
+    </div>
+</div>
+
 <script src="main.js"></script>
 </body>
 </html>
