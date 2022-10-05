@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/normalize.css">
+<!--    <link rel="stylesheet" href="./css/main.css">-->
+<!--    <link rel="stylesheet" href="./css/normalize.css">-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -20,11 +20,11 @@
     </div>
     <div class="actions">
         <div class="search">
-            <input type="text" name="search" id="search" placeholder="Search">
+            <input type="text" name="search" id="search" placeholder="Search" onchange="search(event)">
             <i class="bi bi-search"></i>
         </div>
-        <i class="bi bi-funnel"></i>
-        <i class="bi bi-plus-circle"></i>
+        <i class="bi bi-funnel" onclick="filter()"></i>
+        <i class="bi bi-plus-circle" onclick="add()"></i>
     </div>
 </nav>
 <main>
@@ -51,6 +51,7 @@
 </main>
 <div class="modalPreview">
     <div class="modal-content">
+        <p>Task Preview</p>
         <fieldset>
             <legend>Task Name</legend>
             <input id="taskNamePreview" type="text">
@@ -82,6 +83,7 @@
 </div>
 <div class="modalEdit">
     <div class="modal-content">
+        <p>Edit Task</p>
         <fieldset>
             <legend>Task Name</legend>
             <input id="taskNameEdit" type="text" placeholder="Task Name" maxlength="20">
@@ -110,6 +112,66 @@
         </fieldset>
         <button id="save">save</button>
     </div>
+</div>
+<div class="modalAdd">
+    <div class="modal-content">
+        <p>Task Preview</p>
+        <fieldset>
+            <legend>Task Name</legend>
+            <input id="taskNameAdd" type="text" value="Add something" required>
+        </fieldset>
+        <fieldset>
+            <legend>Priority</legend>
+            <select id="priorityAdd" name="priority">
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Status</legend>
+            <select id="statusAdd" name="priority">
+                <option value="todo">To Do</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Deadline</legend>
+            <input id="deadLineAdd" type="date" value="2022-10-10" required>
+        </fieldset>
+        <button id="saveAdd">Save</button>
+    </div>
+</div>
+<div class="filter">
+    <fieldset>
+        <legend>Priority</legend>
+        <select id="priorityFilter" name="priority">
+            <option value="">All</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <legend>Status</legend>
+        <select id="statusFilter" name="priority">
+            <option value="">All</option>
+            <option value="todo">To Do</option>
+            <option value="doing">Doing</option>
+            <option value="done">Done</option>
+        </select>
+    </fieldset>
+    <fieldset>
+        <legend>Deadline</legend>
+        <select id="deadlineFilter" name="priority">
+            <option value="">All</option>
+            <option value="overdue">OverDue</option>
+            <option value="today">Today</option>
+            <option value="future">Future</option>
+        </select>
+    </fieldset>
+    <button id="closeFilter">CLose</button>
 </div>
 
 <script src="main.js"></script>

@@ -59,12 +59,15 @@ function show(arr) {
 
         if (+item.deadline.split("-").join("") < today) {
             deadline.classList.add("badge--overdue")
+            item.ds = "overdue"
         }
         if (+item.deadline.split("-").join("") === today) {
             deadline.classList.add("badge--today")
+            item.ds = "today"
         }
         if (+item.deadline.split("-").join("") > today) {
             deadline.classList.add("badge--future")
+            item.ds = "future"
         }
         table.append(tr)
     });
@@ -122,5 +125,51 @@ function edit(event) {
     save(event)
 }
 
+function add() {
+    document.querySelector(".modalAdd").style.display = "flex"
+    document.querySelector("#saveAdd").addEventListener("click", () => {
+        document.querySelector(".modalAdd").style.display = "none"
+        const addData = {
+            id: Math.floor(Math.random() * (1000 - 10) + 10),
+            task: document.querySelector("#taskNameAdd").value,
+            priority: document.querySelector("#priorityAdd").value,
+            status: document.querySelector("#statusAdd").value,
+            deadline: document.querySelector("#deadLineAdd").value
+        }
+        data.push(addData)
+        document.querySelectorAll(".tasks").forEach(item => item.remove());
+        show(data)
+    })
+}
+
+function filter() {
+    document.querySelector(".filter").style.display = "block";
+    document.querySelector(".filter").style.right = "0";
+    document.querySelector("#closeFilter").addEventListener("click", () => {
+        const priorityFilter = document.querySelector("#priorityFilter").value;
+        console.log(priorityFilter)
+        const statusFilter = document.querySelector("#statusFilter").value;
+        const deadlineFilter = document.querySelector("#deadlineFilter").value;
+        const filter = data.filter(item => (priorityFilter ? item.priority === priorityFilter : true) && (statusFilter ? item.status === statusFilter : true) && (deadlineFilter ? item.ds === deadlineFilter : true));
+        document.querySelectorAll(".tasks").forEach(item => item.remove());
+        show(filter)
+        document.querySelector(".filter").style.right = "-20rem";
+        document.querySelector(".filter").style.display = "none";
+    })
+}
+
+function search(event) {
+    if (event.target.value) {
+        const searchData = [...data];
+        const filterSearch = searchData.filter(item => item.task.toLowerCase().search(event.target.value.toLowerCase()) >=0 );
+
+        document.querySelectorAll(".tasks").forEach(item => item.remove());
+        show(filterSearch);
+    } else {
+        document.querySelectorAll(".tasks").forEach(item => item.remove());
+        show(data);
+    }
+
+}
 
 show(data)
