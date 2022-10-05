@@ -1,9 +1,18 @@
 let data = [
-    {id: 1, task: "take the dog", priority: "medium", status: "todo", deadline: "2022-10-01"},
-    {id: 2, task: "take the cat", priority: "low", status: "doing", deadline: "2022-10-05"},
-    {id: 3, task: "take the cow", priority: "high", status: "done", deadline: "2022-10-10"},
+    {id: 1, task: "have breakfast", priority: "high", status: "doing", deadline: "2022-10-01"},
+    {id: 2, task: "call mom", priority: "high", status: "doing", deadline: "2022-10-05"},
+    {id: 3, task: "do the dishes", priority: "high", status: "todo", deadline: "2022-10-10"},
+    {id: 4, task: "take a nap", priority: "high", status: "todo", deadline: "2022-10-16"},
+    {id: 5, task: "make the bed", priority: "low", status: "todo", deadline: "2022-10-02"},
+    {id: 6, task: "watch game", priority: "low", status: "doing", deadline: "2022-10-03"},
+    {id: 7, task: "go to the gym", priority: "low", status: "done", deadline: "2022-10-04"},
+    {id: 8, task: "take a shower", priority: "medium", status: "done", deadline: "2022-10-05"},
+    {id: 9, task: "take the dog", priority: "medium", status: "todo", deadline: "2022-10-07"},
+    {id: 10, task: "go shopping", priority: "medium", status: "done", deadline: "2022-10-08"},
 
 ]
+let pageSize = 15;
+let pageNumber = 1;
 
 const table = document.querySelector("table")
 
@@ -161,7 +170,7 @@ function filter() {
 function search(event) {
     if (event.target.value) {
         const searchData = [...data];
-        const filterSearch = searchData.filter(item => item.task.toLowerCase().search(event.target.value.toLowerCase()) >=0 );
+        const filterSearch = searchData.filter(item => item.task.toLowerCase().search(event.target.value.toLowerCase()) >= 0);
 
         document.querySelectorAll(".tasks").forEach(item => item.remove());
         show(filterSearch);
@@ -172,4 +181,46 @@ function search(event) {
 
 }
 
-show(data)
+function changeItem(event) {
+    pageNumber=1
+    pageSize = event.target.value;
+    const newData = paginate(data, pageNumber, pageSize);
+    console.log(newData)
+    const countOfFilterItems = data.length;
+    const pagesCount = Math.ceil(countOfFilterItems / pageSize);
+    // const pages = _.range(1, pagesCount + 1);
+    document.querySelectorAll(".tasks").forEach(item => item.remove());
+    show(newData);
+
+
+    document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.remove())
+    for (let i = 1; i <= pagesCount; i++) {
+        const mySpan = document.createElement("span")
+        mySpan.id = i;
+        mySpan.className = "badge badge--small";
+        mySpan.innerHTML = i;
+        document.querySelector(".page").append(mySpan)
+    }
+    if (pagesCount > 1) {
+        document.querySelectorAll(".badge--small").forEach(item => {
+            item.addEventListener("click", (event) => {
+                pageNumber = event.target.id
+                const newData = paginate(data, pageNumber, pageSize);
+                document.querySelectorAll(".tasks").forEach(item => item.remove());
+                show(newData);
+
+            })
+        })
+
+    }
+}
+
+function paginate(items, pageNumber, pageSize) {
+    const startIndex = (pageNumber - 1) * pageSize;
+    return _(items)
+        .slice(startIndex)
+        .take(pageSize)
+        .value();
+}
+
+show(paginate(data, pageNumber, pageSize))

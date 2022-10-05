@@ -64,8 +64,9 @@ body {
 
 
 .badge--small {
-    font-size: 1.6rem;
-    padding: 0.5rem 1.5rem;
+    color:white;
+    background-color: black;
+    margin: 1rem;
 }
 
 .badge--overdue {
