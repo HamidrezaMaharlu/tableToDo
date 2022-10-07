@@ -123,7 +123,9 @@ const save = event => {
         }
         data = newData;
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        show(data)
+        makePageNumber(data);
+        const pagi = paginate(data, pageNumber, pageSize);
+        show(pagi)
 
     })
 
@@ -170,9 +172,8 @@ function filter() {
         const deadlineFilter = document.querySelector("#deadlineFilter").value;
         const filter = data.filter(item => (priorityFilter ? item.priority === priorityFilter : true) && (statusFilter ? item.status === statusFilter : true) && (deadlineFilter ? item.ds === deadlineFilter : true));
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        makePageNumber(filter);
-        const pagi = paginate(filter, pageNumber, pageSize);
-        show(pagi)
+        document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.remove())
+        show(filter)
         document.querySelector(".filter").style.right = "-20rem";
         document.querySelector(".filter").style.display = "none";
     }, {once: true})
