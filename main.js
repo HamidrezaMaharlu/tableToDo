@@ -27,7 +27,6 @@ const today = +[year, month, day].join("")
 
 
 function show(arr) {
-    console.log(arr)
     arr.forEach(item => {
         const tr = document.querySelector(".todo").cloneNode(true)
         tr.classList.replace("todo", "tasks")
@@ -123,7 +122,6 @@ const save = event => {
             deadline: document.querySelector("#deadLineEdit").value
         }
         data = newData;
-        console.log(data)
         document.querySelectorAll(".tasks").forEach(item => item.remove());
         show(data)
 
@@ -172,8 +170,6 @@ function filter() {
         const deadlineFilter = document.querySelector("#deadlineFilter").value;
         const filter = data.filter(item => (priorityFilter ? item.priority === priorityFilter : true) && (statusFilter ? item.status === statusFilter : true) && (deadlineFilter ? item.ds === deadlineFilter : true));
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        console.log(data)
-        console.log(filter)
         makePageNumber(filter);
         const pagi = paginate(filter, pageNumber, pageSize);
         show(pagi)
@@ -184,11 +180,9 @@ function filter() {
 
 function search(event) {
     if (event.target.value) {
-        const searchData = [...data];
-        const filterSearch = searchData.filter(item => item.task.toLowerCase().search(event.target.value.toLowerCase()) >= 0);
+        const filterSearch = data.filter(item => item.task.toLowerCase().search(event.target.value.toLowerCase()) >= 0);
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        console.log(filterSearch)
-        makePageNumber(filterSearch);
+        document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.remove())
         const pagi = paginate(filterSearch, pageNumber, pageSize);
         show(pagi);
     } else {
@@ -201,10 +195,8 @@ function search(event) {
 }
 
 function changeItem(event) {
-    // pageNumber = 1
     pageSize = event.target.value;
     const newData = paginate(data, pageNumber, pageSize);
-    // const pages = _.range(1, pagesCount + 1);
     document.querySelectorAll(".tasks").forEach(item => item.remove());
     show(newData);
     makePageNumber(data)
@@ -237,7 +229,6 @@ function makePageNumber(arr) {
                 pageNumber = event.target.id;
                 item.classList.add("badge--active")
                 const newData = paginate(arr, pageNumber, pageSize);
-                console.log(newData)
                 document.querySelectorAll(".tasks").forEach(item => item.remove());
                 show(newData);
             })
@@ -253,7 +244,6 @@ function makePageNumber(arr) {
 
 function active() {
     if (pageNumber == currentPage) {
-        console.log("id");
         const li = document.getElementById(`${pageNumber}`);
         li.classList.add("badge--active");
     } else {
