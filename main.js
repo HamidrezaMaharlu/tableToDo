@@ -1,18 +1,19 @@
 let data = [
-    {id: 1, task: "have breakfast", priority: "high", status: "doing", deadline: "2022-10-01"},
-    {id: 2, task: "call mom", priority: "high", status: "doing", deadline: "2022-10-05"},
-    {id: 3, task: "do the dishes", priority: "high", status: "todo", deadline: "2022-10-10"},
-    {id: 4, task: "take a nap", priority: "high", status: "todo", deadline: "2022-10-16"},
-    {id: 5, task: "make the bed", priority: "low", status: "todo", deadline: "2022-10-02"},
-    {id: 6, task: "watch game", priority: "low", status: "doing", deadline: "2022-10-03"},
-    {id: 7, task: "go to the gym", priority: "low", status: "done", deadline: "2022-10-04"},
-    {id: 8, task: "take a shower", priority: "medium", status: "done", deadline: "2022-10-05"},
-    {id: 9, task: "take the dog", priority: "medium", status: "todo", deadline: "2022-10-07"},
-    {id: 10, task: "go shopping", priority: "medium", status: "done", deadline: "2022-10-08"},
+    {id: 1, task: "have breakfast", priority: "high", status: "doing", deadline: "2022-10-01", ds: "overdue"},
+    {id: 2, task: "call mom", priority: "high", status: "doing", deadline: "2022-10-05", ds: "overdue"},
+    {id: 3, task: "do the dishes", priority: "high", status: "todo", deadline: "2022-10-10", ds: "future"},
+    {id: 4, task: "take a nap", priority: "high", status: "todo", deadline: "2022-10-16", ds: "future"},
+    {id: 5, task: "make the bed", priority: "low", status: "todo", deadline: "2022-10-02", ds: "overdue"},
+    {id: 6, task: "watch game", priority: "low", status: "doing", deadline: "2022-10-03", ds: "overdue"},
+    {id: 7, task: "go to the gym", priority: "low", status: "done", deadline: "2022-10-04", ds: "overdue"},
+    {id: 8, task: "take a shower", priority: "medium", status: "done", deadline: "2022-10-05", ds: "overdue"},
+    {id: 9, task: "take the dog", priority: "medium", status: "todo", deadline: "2022-10-07", ds: "today"},
+    {id: 10, task: "go shopping", priority: "medium", status: "done", deadline: "2022-10-08", ds: "future"},
 
 ]
-let pageSize = 15;
+let pageSize = 5;
 let pageNumber = 1;
+let currentPage = 1;
 
 const table = document.querySelector("table")
 
@@ -26,6 +27,7 @@ const today = +[year, month, day].join("")
 
 
 function show(arr) {
+    console.log(arr)
     arr.forEach(item => {
         const tr = document.querySelector(".todo").cloneNode(true)
         tr.classList.replace("todo", "tasks")
@@ -95,11 +97,12 @@ function preview(event) {
 }
 
 function del(event) {
-    const newData = [...data]
-    const filter = newData.filter(item => item.id !== +event.target.id);
-    data = filter
+    const filter = data.filter(item => item.id !== +event.target.id);
+    data = filter;
     document.querySelectorAll(".tasks").forEach(item => item.remove());
-    show(filter);
+    makePageNumber(data);
+    const pagi = paginate(data, pageNumber, pageSize);
+    show(pagi);
 }
 
 const save = event => {
@@ -136,19 +139,28 @@ function edit(event) {
 
 function add() {
     document.querySelector(".modalAdd").style.display = "flex"
-    document.querySelector("#saveAdd").addEventListener("click", () => {
-        document.querySelector(".modalAdd").style.display = "none"
+    document.querySelector("#saveAdd").addEventListener("click", (event) => {
+        event.preventDefault()
         const addData = {
             id: Math.floor(Math.random() * (1000 - 10) + 10),
-            task: document.querySelector("#taskNameAdd").value,
-            priority: document.querySelector("#priorityAdd").value,
-            status: document.querySelector("#statusAdd").value,
-            deadline: document.querySelector("#deadLineAdd").value
+            task: `${document.querySelector("#taskNameAdd").value}`,
+            priority: `${document.querySelector("#priorityAdd").value}`,
+            status: `${document.querySelector("#statusAdd").value}`,
+            deadline: `${document.querySelector("#deadLineAdd").value}`,
         }
-        data.push(addData)
-        document.querySelectorAll(".tasks").forEach(item => item.remove());
-        show(data)
-    })
+        if (document.querySelector("#taskNameAdd").value) {
+            data.push(addData);
+            document.querySelectorAll(".tasks").forEach(item => item.remove());
+            makePageNumber(data);
+            const pagi = paginate(data, pageNumber, pageSize);
+            show(pagi);
+            document.querySelector(".modalAdd").style.display = "none";
+        } else {
+            alert(`you didn't enter anything`)
+            document.querySelector(".modalAdd").style.display = "none";
+        }
+    }, {once: true})
+    document.querySelector("#taskNameAdd").value = ""
 }
 
 function filter() {
@@ -156,63 +168,46 @@ function filter() {
     document.querySelector(".filter").style.right = "0";
     document.querySelector("#closeFilter").addEventListener("click", () => {
         const priorityFilter = document.querySelector("#priorityFilter").value;
-        console.log(priorityFilter)
         const statusFilter = document.querySelector("#statusFilter").value;
         const deadlineFilter = document.querySelector("#deadlineFilter").value;
         const filter = data.filter(item => (priorityFilter ? item.priority === priorityFilter : true) && (statusFilter ? item.status === statusFilter : true) && (deadlineFilter ? item.ds === deadlineFilter : true));
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        show(filter)
+        console.log(data)
+        console.log(filter)
+        makePageNumber(filter);
+        const pagi = paginate(filter, pageNumber, pageSize);
+        show(pagi)
         document.querySelector(".filter").style.right = "-20rem";
         document.querySelector(".filter").style.display = "none";
-    })
+    }, {once: true})
 }
 
 function search(event) {
     if (event.target.value) {
         const searchData = [...data];
         const filterSearch = searchData.filter(item => item.task.toLowerCase().search(event.target.value.toLowerCase()) >= 0);
-
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        show(filterSearch);
+        console.log(filterSearch)
+        makePageNumber(filterSearch);
+        const pagi = paginate(filterSearch, pageNumber, pageSize);
+        show(pagi);
     } else {
         document.querySelectorAll(".tasks").forEach(item => item.remove());
-        show(data);
+        makePageNumber(data);
+        const pagi = paginate(data, pageNumber, pageSize);
+        show(pagi);
     }
 
 }
 
 function changeItem(event) {
-    pageNumber=1
+    // pageNumber = 1
     pageSize = event.target.value;
     const newData = paginate(data, pageNumber, pageSize);
-    console.log(newData)
-    const countOfFilterItems = data.length;
-    const pagesCount = Math.ceil(countOfFilterItems / pageSize);
     // const pages = _.range(1, pagesCount + 1);
     document.querySelectorAll(".tasks").forEach(item => item.remove());
     show(newData);
-
-
-    document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.remove())
-    for (let i = 1; i <= pagesCount; i++) {
-        const mySpan = document.createElement("span")
-        mySpan.id = i;
-        mySpan.className = "badge badge--small";
-        mySpan.innerHTML = i;
-        document.querySelector(".page").append(mySpan)
-    }
-    if (pagesCount > 1) {
-        document.querySelectorAll(".badge--small").forEach(item => {
-            item.addEventListener("click", (event) => {
-                pageNumber = event.target.id
-                const newData = paginate(data, pageNumber, pageSize);
-                document.querySelectorAll(".tasks").forEach(item => item.remove());
-                show(newData);
-
-            })
-        })
-
-    }
+    makePageNumber(data)
 }
 
 function paginate(items, pageNumber, pageSize) {
@@ -223,4 +218,51 @@ function paginate(items, pageNumber, pageSize) {
         .value();
 }
 
-show(paginate(data, pageNumber, pageSize))
+function makePageNumber(arr) {
+    pageNumber = 1
+    const countOfFilterItems = arr.length;
+    const pagesCount = Math.ceil(countOfFilterItems / pageSize);
+    if (pagesCount > 1) {
+        document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.remove())
+        for (let i = 1; i <= pagesCount; i++) {
+            const mySpan = document.createElement("span")
+            mySpan.id = i;
+            mySpan.className = "badge badge--small";
+            mySpan.innerHTML = i;
+            document.querySelector(".page").append(mySpan)
+        }
+        document.querySelectorAll(".badge--small").forEach(item => {
+            item.addEventListener("click", (event) => {
+                document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.classList.remove("badge--active"))
+                pageNumber = event.target.id;
+                item.classList.add("badge--active")
+                const newData = paginate(arr, pageNumber, pageSize);
+                console.log(newData)
+                document.querySelectorAll(".tasks").forEach(item => item.remove());
+                show(newData);
+            })
+        });
+
+    } else {
+        document.querySelector(".page").querySelectorAll(".badge--small").forEach(item => item.remove())
+        document.querySelectorAll(".tasks").forEach(item => item.remove());
+        const pagi = paginate(data, pageNumber, pageSize);
+        show(pagi);
+    }
+}
+
+function active() {
+    if (pageNumber == currentPage) {
+        console.log("id");
+        const li = document.getElementById(`${pageNumber}`);
+        li.classList.add("badge--active");
+    } else {
+        const li = document.getElementById(`${pageNumber}`);
+        li.classList.remove("badge--active");
+    }
+}
+
+makePageNumber(data)
+const pagi = paginate(data, pageNumber, pageSize);
+active()
+show(pagi)

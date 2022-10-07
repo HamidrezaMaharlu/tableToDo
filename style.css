@@ -65,8 +65,11 @@ body {
 
 .badge--small {
     color:white;
-    background-color: black;
+    background: black;
     margin: 1rem;
+}
+.badge--active {
+    background: #2584ff;
 }
 
 .badge--overdue {
@@ -187,7 +190,9 @@ td:first-child {
     top: 0;
     right: -20rem;
     height: 100vh;
-    transition: all .4s;
+    transition: all .5s;
     color: #D9D9D9;
     display: none;
 }
+
+
